@@ -4,8 +4,8 @@ const Manager = require('../lib/Manager');
 const Intern = require('../lib/Intern');
 const Engineer = require('../lib/Engineer');
 const Employee = require('../lib/Employee');
+const { getDiffieHellman } = require('crypto');
 const employees = [];
-console.log(employees);
 
 inquirer
     .prompt([{
@@ -52,7 +52,6 @@ function addNewEmployee() {
             } else {
                 addIntern();
             }
-            console.log(answers)
         });
 }
 
@@ -91,60 +90,85 @@ function addEngineer() {
         .then(answers => {
             const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
             employees.push(engineer);
-            console.log(answers);
-            if (answers === 'yes') {
+            if (answers.addMore === 'yes') {
                 addNewEmployee();
             } else {
-                return;
+                writeHTML();
             }
         })
 };
 
-// function addIntern() {
-//     inquirer
-//     .prompt([{
-//             type: 'input',
-//             name: 'name',
-//             message: 'Enter name',
-//         },
-//         {
-//             type: 'input',
-//             name: 'id',
-//             message: 'Enter id number',
-//         },
-//         {
-//             type: 'input',
-//             name: 'email',
-//             message: 'Enter email address',
-//         },
-//         {
-//             type: 'input',
-//             name: 'github',
-//             message: 'Please input current school',
-//         }
-//     ])
-//     .then((answers) => {
-//         const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
-//         employees.push(intern);
-//         inquirer
-//         .prompt([{
-//             type: 'input',
-//             name: 'addMore',
-//             message: 'would you like to add another employee?',
-//             choices: [
-//                 'yes',
-//                 'no'
-//             ]
-//             .then(answers => {
-//                 console.log(answers);
-//             })
-//             .then(answers => {
-//                 if (answers === 'yes') {
-//                     addNewEmployee();
-//                 } else {
-//                     return;
-//                 }
-//             })
-//          }]);
-//     });
-// }
+function addIntern() {
+    inquirer
+        .prompt([{
+                type: 'input',
+                name: 'name',
+                message: 'Enter name',
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: 'Enter id number',
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: 'Enter email address',
+            },
+            {
+                type: 'input',
+                name: 'school',
+                message: 'Please list the name of your school',
+            },
+            {
+                type: 'list',
+                name: 'addMore',
+                message: 'would you like to add another employee?',
+                choices: [
+                        'yes',
+                        'no'
+                    ]
+            }
+        ])
+        .then(answers => {
+            const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+            employees.push(intern);
+            if (answers.addMore === 'yes') {
+                addNewEmployee();
+            } else {
+                writeHTML();
+            }
+        })
+};
+
+function writeHTML() {
+    const cardsHTML = employees.map(employee => {
+        if (employee.getRole() === "Manager") {
+            return `<div class="card col-3 col-lg-2 p-4 m-4">
+            <h2>${employee.name}</h2>
+            <p>Role: Manager</p>
+            <p>Id: ${employee.id}</p>
+            <p>email: ${employee.email}</p>
+            <p>Office number: ${employee.github}</p>
+            </div>`
+        }
+        if (employee.getRole() === "Engineer") {
+            return `<div class="card col-3 col-lg-2 p-4 m-4">
+            <h2>${employee.name}</h2>
+            <p>Role: Engineer</p>
+            <p>Id: ${employee.id}</p>
+            <p>email: ${employee.email}</p>
+            <p>github profile: ${employee.github}</p>
+            </div>`
+        } else {
+            return `<div class="card col-3 col-lg-2 p-4 m-4">
+            <h2>${employee.name}</h2>
+            <p>Role: Intern</p>
+            <p>Id: ${employee.id}</p>
+            <p>email: ${employee.email}</p>
+            <p>school: ${employee.school}</p>
+            </div>`
+        }
+    }).join("");
+    console.log(cardsHTML);
+}
