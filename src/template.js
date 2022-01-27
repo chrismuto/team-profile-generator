@@ -4,7 +4,7 @@ const Manager = require('../lib/Manager');
 const Intern = require('../lib/Intern');
 const Engineer = require('../lib/Engineer');
 const Employee = require('../lib/Employee');
-const { getDiffieHellman } = require('crypto');
+const writeHTML = require('./writeHTML');
 const employees = [];
 
 inquirer
@@ -93,7 +93,7 @@ function addEngineer() {
             if (answers.addMore === 'yes') {
                 addNewEmployee();
             } else {
-                writeHTML();
+                writeHTML(employees);
             }
         })
 };
@@ -136,39 +136,7 @@ function addIntern() {
             if (answers.addMore === 'yes') {
                 addNewEmployee();
             } else {
-                writeHTML();
+                writeHTML(employees);
             }
         })
 };
-
-function writeHTML() {
-    const cardsHTML = employees.map(employee => {
-        if (employee.getRole() === "Manager") {
-            return `<div class="card col-3 col-lg-2 p-4 m-4">
-            <h2>${employee.name}</h2>
-            <p>Role: Manager</p>
-            <p>Id: ${employee.id}</p>
-            <p>email: ${employee.email}</p>
-            <p>Office number: ${employee.github}</p>
-            </div>`
-        }
-        if (employee.getRole() === "Engineer") {
-            return `<div class="card col-3 col-lg-2 p-4 m-4">
-            <h2>${employee.name}</h2>
-            <p>Role: Engineer</p>
-            <p>Id: ${employee.id}</p>
-            <p>email: ${employee.email}</p>
-            <p>github profile: ${employee.github}</p>
-            </div>`
-        } else {
-            return `<div class="card col-3 col-lg-2 p-4 m-4">
-            <h2>${employee.name}</h2>
-            <p>Role: Intern</p>
-            <p>Id: ${employee.id}</p>
-            <p>email: ${employee.email}</p>
-            <p>school: ${employee.school}</p>
-            </div>`
-        }
-    }).join("");
-    console.log(cardsHTML);
-}
