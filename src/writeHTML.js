@@ -4,28 +4,28 @@ const path = require('path');
 function writeHTML(employees) {
     const cardsHTML = employees.map(employee => {
         if (employee.getRole() === "Manager") {
-            return `<div class="card col-3 col-lg-2 p-4 m-4">
-            <h2>${employee.name}</h2>
+            return `<div class="card col-4 col-md-3 col-lg-2 p-4 m-4 rounded-2">
+            <h3 class="bg-warning rounded-pill p-3">${employee.name}</h3>
             <p>Role: Manager</p>
             <p>Id: ${employee.id}</p>
-            <p>email: ${employee.email}</p>
-            <p>Office number: ${employee.github}</p>
+            <p>email: <a href="mailto:${employee.email}">${employee.email}</a></p>
+            <p>Office number: ${employee.officeNumber}</p>
             </div>`
         }
         if (employee.getRole() === "Engineer") {
-            return `<div class="card col-3 col-lg-2 p-4 m-4">
-            <h2>${employee.name}</h2>
+            return `<div class="card col-4 col-md-3 col-lg-2 p-4 m-4 rounded-2">
+            <h3 class="bg-warning rounded-pill p-3">${employee.name}</h3>
             <p>Role: Engineer</p>
             <p>Id: ${employee.id}</p>
-            <p>email: ${employee.email}</p>
-            <p>github profile: ${employee.github}</p>
+            <p>email: <a href="mailto:${employee.email}">${employee.email}</a></p>
+            <p>profile: <a href="https://www.github.com/${employee.github}" target="_blank">${employee.github}</a></p>
             </div>`
         } else {
-            return `<div class="card col-3 col-lg-2 p-4 m-4">
-            <h2>${employee.name}</h2>
+            return `<div class="card col-4 col-md-3 col-lg-2 p-4 m-4 rounded-2">
+            <h3 class="bg-warning rounded-pill p-3">${employee.name}</h3>
             <p>Role: Intern</p>
             <p>Id: ${employee.id}</p>
-            <p>email: ${employee.email}</p>
+            <p>email: <a href="mailto:${employee.email}">${employee.email}</a></p>
             <p>school: ${employee.school}</p>
             </div>`
         }
